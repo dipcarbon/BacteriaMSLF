@@ -1,0 +1,36 @@
+acinetobacter+baumannii.fasta
+acinetobacter+baylyi.fasta
+acinetobacter+calcoaceticus.fasta
+acinetobacter+haemolyticus.fasta
+acinetobacter+parvus.fasta
+acinetobacter+pittii.fasta
+bacillus+anthracis.fasta
+Bacillus+coagulans.fasta
+bacillus+licheniformis.fasta
+bacillus+mycoides.fasta
+bacillus+thuringiensis.fasta
+burkholderia+glumae.fasta
+burkholderia+mallei.fasta
+burkholderia+multivorans.fasta
+escherichia +albertii.fasta
+escherichia +fergusonii.fasta
+escherichia+coli.fasta
+escherichia+vulneris.fasta
+legionella+bozemanii.fasta
+legionella+longbeachae.fasta
+legionella+pneumophila.fasta
+legionella+rubrilucens.fasta
+salmonella+agona.fasta
+salmonella+arizonae.fasta
+salmonella+enteritidis.fasta
+salmonella+typhimurium.fasta
+vibrio+alginolyticus.fasta
+vibrio+cholerae.fasta
+vibrio+parahaemolyticus.fasta
+vibrio+vulnificus.fasta
+yersinia+bercovieri.fasta
+yersinia+enterocolitica.fasta
+yersinia+frederiksenii.fasta
+yersinia+mollaretii.fasta
+yersinia+pestis.fasta
+yersinia+pseudotuberculosis.fasta
