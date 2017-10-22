@@ -232,9 +232,8 @@ def int_training(my_sample, my_test, threshold = 0.04):
     model_record = validation(my_test,model_para, threshold)
 
     return model_para,model_record
+#spectra fitlering
 '''
-
-
 with open('spectra_name.txt') as f:
     w = [i for i in f.read().split('\n')]
 with open('database_genera.txt') as f:
@@ -255,16 +254,13 @@ def if_species_func(x):
         return 1
     else:
         return 2
-
-
 spectra_info['if_database'] = spectra_info['spectra'].map(if_species_func)
-
 data = spectra_info[spectra_info.if_database == 2]
-
 data ['matched'] = data.index.map(lambda x:len(BacteriaSpectra(x).get_matched_peak(0.05)))
-
 data ['matched'] = data.index.map(lambda x: len(pd.read_csv('matched_result/'+str(x)+'.csv')))
-
+'''
+#training demo
+'''
 sdata = data[data.matched>10]
 sdata_list = tuple(sdata.index)
 
@@ -276,8 +272,6 @@ model = gn_training(random.sample(sdata_list, 30), 0.05)
 reslut = validation(abc, model, 0.05)
 reslut = validation(sdata_list, model, 0.05)
 reslut = validation(random.sample(sdata_list, 30), model, 0.05)
-
-def itertools_training():
 '''
 
 
