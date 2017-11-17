@@ -7,6 +7,7 @@ Created on Thu Feb  9 15:22:13 2017
 """
 import itertools
 import random
+import time
 import os
 import numpy as np
 import pandas as pd
@@ -15,56 +16,67 @@ import matplotlib.pyplot as plt
 from adjustText import adjust_text
 
 with open('spectra_name.txt') as f:
-    ms_spectra = [i.strip() for i in f]
+    ms_spectra = tuple([i.strip() for i in f])
+with open('uniprot_text.txt') as f:
+    uniprot = tuple([i.strip() for i in f])
 
-uniprot = os.listdir('uniprot')
 the_threshold = 0.12
+score_threshold = 0.9
 tolerance = 1000
 
 
 class BacteriaSpectra:
     def __init__(self, spectra_id):
         self.id = spectra_id
-        self.pattern = ms_spectra[spectra_id]
-        self.taxonomy = self.pattern.split('.')[0]
-        self.genus = self.pattern.split()[0].lower()
-        self.species = self.pattern.split()[1].lower()
+        if type(spectra_id) == str:
+            self.pattern = spectra_id
+        else:
+            self.pattern = 'spectra/'+ms_spectra[spectra_id]
+            self.taxonomy = self.pattern.split('.')[0]
+            self.genus = self.pattern.split()[0].lower()
+            self.species = self.pattern.split()[1].lower()
 
     def plot(self):
         pattern_file = self.get_filterd_pattern(0)
-        pat_matched_file = self.get_matched_peak(0.05).groupby('mw_raw').min()
-        pat_matched_file = pat_matched_file[pat_matched_file.mw < 500]
-        pat_index = pat_matched_file.index
-        pattern_file['color'] = pattern_file['mz'].apply(\
-            lambda x:[0.6, 0.6, 0.6, 1] if x in pat_index else [0, 0, 0, 1])
         fig, ax = plt.subplots()
+        if type(self.id) != str:
+            
+            pat_matched_file = self.get_matched_peak(0.05).groupby('mw_raw').min()
+            pat_matched_file = pat_matched_file[pat_matched_file.mw < 500]
+            pat_index = pat_matched_file.index
+            pattern_file['color'] = pattern_file['mz'].apply(\
+                lambda x:[0.6, 0.6, 0.6, 1] if x in pat_index else [0, 0, 0, 1])
 
-        bars = ax.bar(pattern_file['mz'], pattern_file['int'], width=14, facecolor='k')
+            bars = ax.bar(pattern_file['mz'], pattern_file['int'], width=14, facecolor='k')
         
-        texts=[]
-        for j,rect in enumerate(bars):
-            each_mz = pattern_file.iloc[j]['mz']
-            if each_mz in pat_index:
-                each_text = pat_matched_file.loc[each_mz]['gn']
-                left = rect.get_x()+1
-                top = rect.get_y()+rect.get_height()+0.01
-                texts.append(ax.text(left,top,each_text))
-                rect.set_facecolor('#930000')
+            texts=[]
+            for j,rect in enumerate(bars):
+                each_mz = pattern_file.iloc[j]['mz']
+                if each_mz in pat_index:
+                    each_text = pat_matched_file.loc[each_mz]['gn']
+                    left = rect.get_x()+1
+                    top = rect.get_y()+rect.get_height()+0.01
+                    texts.append(ax.text(left,top,each_text))
+                    rect.set_facecolor('#930000')
 
-        adjust_text(texts, add_objects=bars,
+            adjust_text(texts, add_objects=bars,
                  autoalign='y', only_move={'points':'y', 'text':'y', 'objects':'y'},
                   force_text=0.9, )
+        
+        bars = ax.bar(pattern_file['mz'], pattern_file['int'], width=14, facecolor='k')
+
         ax.set_ylabel('Intensity')
         ax.set_xlabel('m/z')
         plt.xlim(3000,12000)
         ax.plot([3000,12000],[0,0],color='black')
         ax.spines['right'].set_visible(False)
         ax.spines['top'].set_visible(False)
-        ax.set_title(self.genus.capitalize() +' ' + self.species)
+        if type(self.id) != str:
+            ax.set_title(self.genus.capitalize() +' ' + self.species)
         return ax
 
     def get_filterd_pattern(self, int_threshold=the_threshold):
-        peaks = open('spectra/' + self.pattern, "r")
+        peaks = open(self.pattern, "r")
         standard_mass, standard_int = ([], [])
         for peak in peaks:
             standard_mass.append(float(peak.split()[0]))
@@ -101,44 +113,12 @@ class BacteriaSpectra:
         my_table_matched.to_csv('matched_result/'+str(self.id)+'.csv')
         return my_table_matched
 
-
-
-def training_gene_names(sample,threshold):
-    matched_table = pd.concat([BacteriaSpectra(sample_id).get_matched_peak(threshold) for sample_id in sample],ignore_index=True)
-    pre_gn_table = dict(zip(list(set(matched_table.gn)),[0]*len(set(matched_table.gn))))
-    for s_iterator in matched_table.groupby(['species','gn']):
-        pre_gn_table[s_iterator[0][1]] += np.exp(-np.median(s_iterator[1]['mw'])/1000)
-
-    pre_gn_table = pd.DataFrame(pre_gn_table,index=['value']).T.sort_values('value',ascending=False)
-    return (pre_gn_table/max(pre_gn_table.value))
-
-
-def training_comparison_table(gene_value_table):
-    gn_set = list(gene_value_table.index)
-    def is_gn_set(x):
-        if x in gn_set:
-            return x
-        return None
-    def if_mode(x):
-        return round(min(mode(x).mode),1)
-    uniprot_table = pd.concat([pd.read_csv('uniprot/' + i)[['species', 'gn', 'mw','genus']] for i in uniprot],ignore_index=True)
-    uniprot_table['gn'] = uniprot_table['gn'].map(is_gn_set)
-    uniprot_table = uniprot_table.dropna()
-    table_iterator =  uniprot_table.groupby(['genus','species'])
-    def each_gn(iterator):
-        gene_table = dict(zip(['genus','species'],iterator[0]))
-        for gn_iterator in iterator[1].groupby('gn'):
-            gene_table[gn_iterator[0]] = if_mode(gn_iterator[1]['mw'])
-        return pd.DataFrame(gene_table,index=[0])
-    comparison_table = pd.concat([each_gn(i) for i in table_iterator],ignore_index=True).round(0)
-
-    return comparison_table.round(0)
-
-
 class IdentifySpectra(BacteriaSpectra):
-    
-    def answer(self,model_data,threshold=the_threshold):
 
+
+    def answer(self,model_data,threshold=the_threshold):
+        t1 = time.time()
+        threshold=the_threshold
         com_table,answer_table,gn_set,gn_value = model_data 
         pattern = self.get_filterd_pattern(threshold)
         
@@ -159,81 +139,41 @@ class IdentifySpectra(BacteriaSpectra):
         b = making_faster(com_table,gn_set)
         c = [match_soy_peak(x) for x in b]
         my_mw_dict = dict(zip(b,c))
-        
         table = com_table.applymap(lambda x:my_mw_dict[x])
         #table.to_csv('a_table.csv')
-        id_value = table.dot(gn_value)
+        #return (table.dot(gn_value))
+
+        id_value = (table.dot(gn_value)).sort_values()
         #id_value.to_csv('a_can.csv')
-        score = id_value.max().value
-        if score == 0 :
-            return ()
-        candidate = id_value[id_value.value == score].index
-        can = list(set([answer_table.iloc[c]['genus'] for c in candidate]))
-        can.sort()
-        
-        if len(can) == 0:
-            return ''
-        return can[0]
+        id_panel = id_value[-4:]
+        score_mode =id_panel.mode()
+        if not score_mode.empty :
+            score = score_mode.iloc[-1]
+        else:
+            score = id_panel.max()
+        if score < score_threshold:
+            return 'none'
+        #return id_value
+        #if score == 0:
+        #   return ()
+        candidates = id_panel[id_panel == score].index[0]
+        answer_candidate = answer_table.iloc[candidates]['genus']
+        t2 = time.time()
+        print(answer_candidate, score, round(t2-t1, 2), 's')
+        return answer_candidate
+        #candidate = list(set([answer_table.iloc[c]['genus'] for c in candidates]))
+        #candidate.sort()        
+        #if len(candidate) == 0:
+        #    return ''
+        #return candidate[0]
 
         #the_answer['score'] = id_value
         #return the_answer.sort_values('score',ascending=False)[:5]
 
 
-def get_accuracy(validation):
-    the_accuracy = 0
-    for i in range(len(validation)):
-        if validation.iloc[i].key in validation.iloc[i].record:
-            the_accuracy += 1
-    return round(the_accuracy*100/len(validation),2)
-
-
-#
-def gn_training(my_sample,threshold):
-    
-    my_gene = training_gene_names(my_sample,threshold)[:10]
-    my_comparison = training_comparison_table(my_gene)
-    my_gene_set = list(my_gene.index)
-    my_table = my_comparison[my_gene_set].fillna(0.0)
-    #my_comparison.to_csv('a_com.csv')
-    my_answer_table = my_comparison[['genus','species']]
-
-    model_data = (my_table,my_answer_table,my_gene_set,my_gene)
-
-    return model_data
-
-
-def validation(my_test,model_data,threshold):
-    my_table,my_answer_table,my_gene_set,my_gene = model_data
-
-    my_validation = {}
-
-    for each_sample_id in my_test:
-        sample = IdentifySpectra(each_sample_id)
-        model_data = (my_table,my_answer_table,my_gene_set,my_gene)
-        my_record = sample.answer(model_data,threshold = threshold)
-        my_key = sample.genus
-        my_validation[each_sample_id] = (my_record,my_key)
-    my_validation = pd.DataFrame(my_validation,index=['record','key']).T
-    
-    my_accuracy = get_accuracy(my_validation)
-    print(my_accuracy)
-    #my_validation.to_csv(str(my_id)+':'+str(my_accuracy)+'.csv')
-    return my_accuracy,my_validation
-
-
-def int_training(my_sample, my_test, threshold = 0.04):
-    #my_sample = group[my_int_id]
-    #my_test = group[my_int_idc]
-
-    #my_sample = random.sample(w,10)
-    #my_test = my_sample
-
-    model_para = gn_training(my_sample,0.1)
-    model_record = validation(my_test,model_para, threshold)
-
-    return model_para,model_record
-#spectra fitlering
 '''
+
+
 with open('spectra_name.txt') as f:
     w = [i for i in f.read().split('\n')]
 with open('database_genera.txt') as f:
@@ -242,6 +182,8 @@ with open('database_genera.txt') as f:
 spectra_info = pd.DataFrame(w, columns = ['spectra'])
 spectra_info['species'] = spectra_info['spectra'].apply(lambda x: x.split()[1])
 spectra_info['genus'] = spectra_info['spectra'].apply(lambda x: x.split()[0].lower())
+spectra_info = spectra_info[spectra_info['spectra'].map(lambda x: True if x in name0 else False)]
+
 
 def if_species_func(x):
     genus = x.split()[0].lower()
@@ -254,13 +196,31 @@ def if_species_func(x):
         return 1
     else:
         return 2
+
+
 spectra_info['if_database'] = spectra_info['spectra'].map(if_species_func)
+
 data = spectra_info[spectra_info.if_database == 2]
-data ['matched'] = data.index.map(lambda x:len(BacteriaSpectra(x).get_matched_peak(0.05)))
-data ['matched'] = data.index.map(lambda x: len(pd.read_csv('matched_result/'+str(x)+'.csv')))
-'''
-#training demo
-'''
+data ['matched'] = data.index.map(lambda x: len(pd.read_csv('matched_result/'+str(x)+'.csv').mw_raw.unique()))
+
+#spectra_info ['matched'] = spectra_info.index.map(lambda x: len(pd.read_csv('matched_result/'+str(x)+'.csv').mw_raw.unique()))
+
+spectra_info['matched'] = spectra_info.index.map(sm)
+def sm(x):
+    try:
+        return data.iloc[x]['matched']
+    except:
+        return 0
+
+matched ['uni'] = matched.index.map(lambda x: len(pd.read_csv('uniprot/'+str(x)+'.csv')))
+
+#data ['matched'] = data.index.map(lambda x:len(BacteriaSpectra(x).get_matched_peak(0.05)))
+
+
+the_data['answer'] = the_data.index.map(lambda x: IdentifySpectra(x).answer(model_data))
+
+new_data['answer'] = new_data.index.map(lambda x: IdentifySpectra(x).answer(model_data))
+
 sdata = data[data.matched>10]
 sdata_list = tuple(sdata.index)
 
@@ -272,6 +232,31 @@ model = gn_training(random.sample(sdata_list, 30), 0.05)
 reslut = validation(abc, model, 0.05)
 reslut = validation(sdata_list, model, 0.05)
 reslut = validation(random.sample(sdata_list, 30), model, 0.05)
+
+def itertools_training():
+'''
+# analysis 
+'''
+data = pd.read_csv('thedata.csv', index_col = 0)
+data.loc[data.score < 1.103, 'answer'] = 'none'
+def mapping(each_panda):
+    da = len(each_panda[ each_panda.answer == each_panda.genus ])
+    db = len(each_panda[ each_panda.answer != each_panda.genus ])
+    dc = len(each_panda[ each_panda.answer == 'none' ])
+    return da, db-dc, dc
+
+data.groupby('genus').apply(mapping)
+
 '''
 
-
+'''
+num = pd.read_csv('num_uni.csv', header=None, index_col = 0)
+gm = pd.read_csv('g_s.csv')
+gm['org'] = gm.genus+'_'+gm.species
+def try_num(x):
+    try:
+        return int(num.loc[x])
+    except:
+        return 0
+gm['num'] = gm['org'].map( try_num )
+'''
