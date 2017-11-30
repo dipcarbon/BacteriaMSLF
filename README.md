@@ -71,8 +71,16 @@ The result of identification at genus level is *Bacillus*. At species level, it 
 
 ### Cleaning
 
+```py
+uniprot_path = "..."
+clean = os.listdir('uniprot_path')
+cleaning_data(clean)
+```
 ### Training
-
+```py
+training_set = "..."
+training_data(training_set,double_cross=1)
+```
 
 ## Details
 ### identification.py
