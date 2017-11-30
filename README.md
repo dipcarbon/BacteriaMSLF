@@ -52,12 +52,22 @@ Run [main.py] to load the functions.
 %run main.py
 ```
 ### Identificaiton
-Load the unkown peak lists.
+Load the unknown peak lists.
 ```py
 sample_path = 'sample.txt'
 sample = IdentifySpectra(sample_path)
-sample.get_filterd_pattern(THR)
+sample.get_filterd_pattern(thr)
 ```
+`weight.csv` are obtained from traing, which is same as the the gene weights in the Figure 3.
+```py
+my_gene = pd.read_csv('weight.csv',index_col=0)['mean']
+model_data = gene_to_model(my_gene)
+```
+Use `model_data` to identify this unknown spectra.
+```py
+sample.answer(model_data, the_threshold)
+```
+The result of identification at genus level is *Bacillus*. At species level, it can not be distinguished between *Bacillus cytotoxicus, Bacillus gaemokensis, Bacillus manliponensis, Bacillus toyonensis, Bacillus thuringiensis, Bacillus anthracis*. The right identification *Bacillus anthracis* is in the group.
 
 ### Cleaning
 
