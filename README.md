@@ -7,7 +7,7 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 
 ## Database
 ### Spectra
-`LMSACbacteria` uses peak lists for bacteria identification. A peak list is stored in a space-separated text (.txt) file including the m/z and intensity of all the peaks from a mass spectrum of a strain of bacteria with the first column as m/z and the second column as intensity, e.g.:
+`BacteriaMSLF` uses peak lists for bacteria identification. A peak list is stored in a space-separated text (.txt) file including the m/z and intensity of all the peaks from a mass spectrum of a strain of bacteria with the first column as m/z and the second column as intensity, e.g.:
 ```
 4025.85 14.9166578754281
 4179.39 10.0793564012325
