@@ -48,7 +48,16 @@ DRESAQQLLGISS
 ```
 ## Usage
 Run [main.py] to load the functions.
+```
+%run main.py
+```
 ### Identificaiton
+Load the unkown peak lists.
+```py
+sample_path = 'sample.txt'
+sample = IdentifySpectra(sample_path)
+sample.get_filterd_pattern(THR)
+```
 
 ### Cleaning
 
