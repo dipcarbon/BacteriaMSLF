@@ -6,6 +6,7 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 [Anaconda] (https://anaconda.org/anaconda/python) is recommended.
 
 ## Database
+### Spectra
 `LMSACbacteria` uses peak lists for bacteria identification. A peak list is stored in a space-separated text (.txt) file including the m/z and intensity of all the peaks from a mass spectrum of a strain of bacteria with the first column as m/z and the second column as intensity, e.g.:
 ```
 4025.85 14.9166578754281
@@ -29,7 +30,21 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 - Robert Koch-Institute: [http://www.microbe-ms.com/]
 
 - The Public Health Agency of Sweden: [http://spectra.folkhalsomyndigheten.se/spectra/]
+### Uniprot
+`LMSACbacteria` uses proteomic sequences in **Uniprot** to match the MALDI-TOF spectra.
 
+```
+>tr|A0A087INJ0|A0A087INJ0_VIBVL UDP-N-acetylmuramoyl-L-alanyl-D-glutamate--2,6-diaminopimelate ligase OS=Vibrio vulnificus GN=murE PE=3 SV=1
+MRNTMNLTNLLAPWLDCPELADITVQSLELDSRQVKQGDTFVAIVGHVVDGRQYIEKAIE
+QGANAIIAQSCQQYPSGLVRYQQNVVIVYLEKLDEKLSQLAGRLYQHPEMSLIGVTGTNG
+KTTITQLIAQWLELAGQKAAVMGTTGNGFLNALQPAANTTGNAVEIQKTLADLQQQGAKA
+TALEVSSHGLVQGRVKALQFAAGVFTNLSRDHLDYHGTMEAYAQAKMTLFTEHQCQHAII
+NLDDEVGAQWFQELKQGVGVSLYPQDASVKALWASSVAYAESGITIEFEGCFGQGRLHAP
+LIGEFNATNLLLALATLLALGVDKQALLGSAANLRPVLGRMELFQVNSKAKVVVDYAHTP
+DALEKALQALRVHCTGHLWAIFGCGGDRDKGKRPMMAEIAERLADHVVLTDDNPRSEDPA
+MIVQDMLAGLTRADSAVVEHDRFSALQYALDNAQADDIILLAGKGHEDYQVLKHQTVHYS
+DRESAQQLLGISS
+```
 ## Usage
 Run [main.py] to load the functions.
 ### Identificaiton
