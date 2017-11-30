@@ -31,7 +31,7 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 
 - The Public Health Agency of Sweden: [http://spectra.folkhalsomyndigheten.se/spectra/]
 ### Uniprot
-`LMSACbacteria` uses proteomic sequences in **Uniprot**[www.uniprot.org/]
+`LMSACbacteria` uses proteomic sequences in **Uniprot**[[http://www.uniprot.org/]
  to match the MALDI-TOF spectra, e.g.:
 
 ```
