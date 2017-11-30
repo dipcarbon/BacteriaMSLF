@@ -54,7 +54,7 @@ Run [main.py] to load the functions.
 ### Identificaiton
 Load the unknown peak lists.
 ```py
-sample_path = 'sample.txt'
+sample_path = 'data/sample.txt'
 sample = IdentifySpectra(sample_path)
 sample.get_filterd_pattern(thr)
 ```
