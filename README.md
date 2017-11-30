@@ -1,4 +1,4 @@
-# LMSACbacteria
+# BacteriaMSLF
 In this work, we developed a bacterial MALDI TOF spectra identification approach without using standard spectra library, but only protein sequences from Uniprot database. Genetic algorithm with double cross-validation was performed to get the proteins encoded by the most informative genes as protein panels to be considered for bacterial identification. At genus level, the identification accuracy exceeded 80%. Although the performance is still behind to the performance of library search based approach, it can be used as a complementary method when standard library is not available. It can also be used in diverse application areas such as clinical microbiology, biodefense, food safety and environmental health.
 ## Requirement
 Python 3.5 with `numpy`, `pandas`, and `matplotlib` 
