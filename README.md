@@ -15,6 +15,7 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 - The Public Health Agency of Sweden: [http://spectra.folkhalsomyndigheten.se/spectra/]
 
 ## Usage
+Run [main.py] to load the functions.
 ### Identificaiton
 
 ### Cleaning
@@ -23,6 +24,14 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 
 ## Publications
 Ding Cheng, Liang Qiao and Peter Horvatovich, "Library-free MALDI-TOF MS Bacteria Typing", Submitted.
+
+## License
+
+BacteriaMS is distributed under a BSD license. See the LICENSE file for details.
+
+## Contacts
+
+Please report any problems directly to the github issue tracker. Also, you can send feedback to liang_qiao@fudan.edu.cn
 
 
 ### identification.py
