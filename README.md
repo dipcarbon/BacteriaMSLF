@@ -67,6 +67,13 @@ Use `model_data` to identify this unknown spectra.
 ```py
 sample.answer(model_data, the_threshold)
 ```
+Output:
+```py
+{'genera': 'bacillus',
+ 'score': 1.9266267268100001,
+ 'species': ('toyonensis', 'anthracis'),
+ 'time': 2.3}
+ ```
 The result of identification at genus level is *Bacillus*. At species level, it can not be distinguished between *Bacillus cytotoxicus, Bacillus gaemokensis, Bacillus manliponensis, Bacillus toyonensis, Bacillus thuringiensis, Bacillus anthracis*. The right identification *Bacillus anthracis* is in the group.
 
 ### Cleaning
