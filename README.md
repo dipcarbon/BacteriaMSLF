@@ -74,7 +74,7 @@ Output:
  'species': ('toyonensis', 'anthracis'),
  'time': 2.3}
  ```
-The result of identification at genus level is *Bacillus*. At species level, it can not be distinguished between *Bacillus cytotoxicus, Bacillus gaemokensis, Bacillus manliponensis, Bacillus toyonensis, Bacillus thuringiensis, Bacillus anthracis*. The right identification *Bacillus anthracis* is in the group.
+The result of identification at genus level is *Bacillus*. At species level, it can not be distinguished between *Bacillus toyonensis, Bacillus anthracis*. The right identification *Bacillus anthracis* is in the group.
 
 ### Cleaning
 
