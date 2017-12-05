@@ -14,6 +14,7 @@ import pandas as pd
 from scipy.stats import mode
 import matplotlib.pyplot as plt
 from adjustText import adjust_text
+import pprint
 
 with open('spectra_name.txt') as f:
     ms_spectra = tuple([i.strip() for i in f])
@@ -23,7 +24,7 @@ with open('uniprot_text.txt') as f:
 the_threshold = 0.12
 score_threshold = 0.9
 tolerance = 1000
-
+thr = 0.05
 
 class BacteriaSpectra:
     def __init__(self, spectra_id):
@@ -156,11 +157,17 @@ class IdentifySpectra(BacteriaSpectra):
         #return id_value
         #if score == 0:
         #   return ()
+        answer_dict={}
         candidates = id_panel[id_panel == score].index[0]
+        species_index = id_panel[id_panel == score].index
+        species_candidates = tuple(answer_table.iloc[species_index]['species'])
         answer_candidate = answer_table.iloc[candidates]['genus']
         t2 = time.time()
-        print(answer_candidate, score, round(t2-t1, 2), 's')
-        return answer_candidate
+        answer_dict = {'score': score, 'time': round(t2-t1, 2),\
+        "genera": answer_candidate, "species" : species_candidates,\
+        "path": self.pattern}
+        pprint.pprint(answer_dict)
+        return answer_dict['genera']
         #candidate = list(set([answer_table.iloc[c]['genus'] for c in candidates]))
         #candidate.sort()        
         #if len(candidate) == 0:
@@ -172,6 +179,8 @@ class IdentifySpectra(BacteriaSpectra):
 
 
 '''
+sample_path = 'lab/Bacillus subtilis ATCC 6633.txt'
+IdentifySpectra(sample_path).answer(model_data, the_threshold)
 
 
 with open('spectra_name.txt') as f:

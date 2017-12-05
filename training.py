@@ -101,10 +101,6 @@ def int_training(my_sample, my_test, threshold = 0.04):
 
     return model_para,model_record
 
-data = pd.read_csv('newdata.csv',index_col=0)[['species', 'genus']]
-data_index = set(data.index)
-
-
 def gene_to_model(my_gene):
     my_gene = my_gene[:10]
     my_comparison = training_comparison_table(my_gene)
@@ -192,6 +188,9 @@ calculated_table = table
 my_answer_table = answer_table.copy()
 my_answer_table['score'] = id_value_raw
 
+data = pd.read_csv('newdata.csv',index_col=0)[['species', 'genus']]
+data_index = set(data.index)
+"""
 
 
 
