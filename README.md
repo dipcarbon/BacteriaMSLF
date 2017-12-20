@@ -92,6 +92,7 @@ training_data(training_set,double_cross=1)
 ## Details
 ### ga.py
 modification of pyevolve.
+
 **Usage:**
 The original gene weight table is:
 ```
