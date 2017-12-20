@@ -9,7 +9,8 @@ import os
 import fileinput
 import time
 
-from pyevolve import 2DList
+import pyevolve
+from pyevolve import G2DList
 
 import lammpsbuilder as lb
 
