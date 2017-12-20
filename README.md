@@ -90,6 +90,51 @@ training_data(training_set,double_cross=1)
 ```
 
 ## Details
+### ga.py
+modification of pyevolve.
+**Usage:**
+The original gene weight table is:
+```
+rpmc	1
+rpmj	0.947787695
+rpmh	0.650960175
+rpme	0.236613986
+rpmg	0.452056135
+rplx	0.39878139
+rpmd	0.38311829
+rpsp	0.268586678
+hupa	0.225921218
+hupb	0.230108406
+```
+Optimization:
+```py
+import ga
+import training
+
+gene_weight_table = '...'
+parameters = (...)
+training_set = '...'
+
+my_gene = Gene(gene_weight_table)
+my_alth = Algorithm(training.validation(), parameters)
+my_gene.optimize(my_alth, 50)
+print (my_gene.weight)
+```
+The optimized gene weight table is:
+```
+rpmc	0.999341229
+rpmj	0.931126682
+rpmh	0.65297138
+rpme	0.453734286
+rpmg	0.451085325
+rplx	0.414614517
+rpmd	0.337521184
+rpsp	0.328949972
+hupa	0.328484009
+hupb	0.327136496
+```
+
+
 ### identification.py
 package for identification of bacteria spectra
 ### parse_data.py
