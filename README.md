@@ -79,13 +79,13 @@ The result of identification at genus level is *Bacillus*. At species level, it 
 ### Cleaning
 
 ```py
-uniprot_path = "..."
+uniprot_path = ...
 clean = os.listdir('uniprot_path')
 cleaning_data(clean)
 ```
 ### Training
 ```py
-training_set = "..."
+training_set = ...
 training_data(training_set,double_cross=1)
 ```
 
@@ -111,9 +111,9 @@ Optimization:
 import ga
 import training
 
-gene_weight_table = '...'
-parameters = (...)
-training_set = '...'
+gene_weight_table = ...
+parameters = ...
+training_set = ...
 
 my_gene = Gene(gene_weight_table)
 my_alth = Algorithm(training.validation(), parameters)
