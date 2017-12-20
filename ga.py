@@ -1,6 +1,5 @@
 import random
 import string
-
 import numpy as np
 import math
 import time
@@ -10,14 +9,7 @@ import os
 import fileinput
 import time
 
-import signal
-
-from deap import base
-from deap import creator
-from deap import tools
-from deap import algorithms
-
-from threading import Timer
+from pyevolve import 2DList
 
 import lammpsbuilder as lb
 
@@ -528,13 +520,3 @@ class MembraneSimulation(lb.LammpsSimulation):
 		
 		self.script.addLine("fix 4 all wall/lj93 yhi 18 1.0 1.0 1.12")
 		
-
-def main():
-	state = State()
-	for i in range(5):
-		gNum = (i+1)*4
-		state.registerInstance(Genome(genes=gNum),0.25)
-	p = state.run(30,0.5,0.2,50,False)
-	
-if __name__ == "__main__":
-	main()
