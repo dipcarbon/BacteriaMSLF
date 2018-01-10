@@ -47,6 +47,7 @@ MIVQDMLAGLTRADSAVVEHDRFSALQYALDNAQADDIILLAGKGHEDYQVLKHQTVHYS
 DRESAQQLLGISS
 ```
 ## Usage
+The following examples are running in the `IPython` environment.
 Run [main.py] to load the functions.
 ```
 %run main.py
