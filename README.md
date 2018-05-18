@@ -31,7 +31,7 @@ Python 3.5 with `numpy`, `pandas`, and `matplotlib`
 
 - The Public Health Agency of Sweden: [http://spectra.folkhalsomyndigheten.se/spectra/]
 ### UniProt
-`LMSACbacteria` uses proteomic sequences in ***UniProt***[[http://www.uniprot.org/]
+`BacteriaMSLF` uses proteomic sequences in ***UniProt***[[http://www.uniprot.org/]
  to match the MALDI-TOF spectra, e.g.:
 
 ```
@@ -87,7 +87,7 @@ cleaning_data(clean)
 ### Training
 ```py
 training_set = ...
-training_data(training_set,double_cross=1)
+training_data(training_set,double_cross=10)
 ```
 
 ## Details
@@ -144,16 +144,16 @@ cleaning and transforming fasta file into csv file
 ### plotting.py
 plotting fuctions in the paper
 ### training.py
-training
+training functions
 
 ## Publications
-Ding Cheng, Liang Qiao and Peter Horvatovich, "Library-free MALDI-TOF MS Bacteria Typing", Submitted.
+Ding Cheng, Liang Qiao and Peter Horvatovich, "Toward Spectral Library-Free Matrix-Assisted Laser Desorption/Ionization Time-of-Flight Mass Spectrometry Bacterial Identification", Submitted.
 
 ## License
 
-BacteriaMS is distributed under a BSD license. See the LICENSE file for details.
+`BacteriaMSLF` is distributed under a BSD license. See the LICENSE file for details.
 
 ## Contacts
 
-Please report any problems directly to the github issue tracker. Also, you can send feedback to liang_qiao@fudan.edu.cn
+Please report any problems directly to the github issue tracker. Also, you can send feedback to `liang_qiao AT fudan.edu.cn`.
 
