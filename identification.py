@@ -16,10 +16,10 @@ import matplotlib.pyplot as plt
 from adjustText import adjust_text
 import pprint
 
-with open('spectra_name.txt') as f:
-    ms_spectra = tuple([i.strip() for i in f])
-with open('uniprot_text.txt') as f:
-    uniprot = tuple([i.strip() for i in f])
+# with open('spectra_name.txt') as f:
+#     ms_spectra = tuple([i.strip() for i in f])
+# with open('uniprot_text.txt') as f:
+#     uniprot = tuple([i.strip() for i in f])
 
 the_threshold = 0.12
 score_threshold = 0.9
